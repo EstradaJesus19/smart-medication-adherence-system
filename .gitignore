@@ -1,0 +1,13 @@
+.pio/
+.tools/
+build/
+.venv/
+__pycache__/
+.vscode/*
+!.vscode/extensions.json
+*.log
+.DS_Store
+Thumbs.db
+docs/paper/*.aux
+docs/paper/*.out
+docs/paper/*.log
