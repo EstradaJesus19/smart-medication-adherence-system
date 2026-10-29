@@ -185,3 +185,25 @@ upload and physical scheduling validation require user observations.
   sandbox compiler runs passed. No dependencies were downloaded for this work.
 - No upload, hardware fault test or automatic physical reminder was performed
   by the agent. Desktop checks do not establish measured sensor/I2C latency.
+
+## User-reported scheduler acceptance results — 2026-10-24
+
+The user completed the remaining scheduler checks on `scheduled_alert_test`
+and reported all passed:
+
+- Empty schedule: arm rejected, DISARMED, no sound or pending LEDs.
+- Validation: overlapping 30-second and 60-second entries, invalid time and
+  duplicate compartment arguments rejected without changing the valid entry;
+  overlap across midnight rejected.
+- Replay/future-only eligibility: completed occurrence did not repeat after
+  disarm/rearm; arming after a scheduled time did not start it late; a new
+  future occurrence still triggered normally.
+- Reset: RTC time retained; schedule/history cleared, scheduler DISARMED,
+  outcomes NONE, LEDs and sound off; empty arm rejected and prior schedule
+  did not run.
+
+These are user-reported physical results on the combined adapter, which uses
+DailyScheduler; they do not imply a separate repeat upload of scheduled_lid_test.
+The previously deferred required scheduler acceptance checks are complete.
+Optional physical midnight/day rollover remains deferred; desktop rollover
+coverage and physical midnight-overlap rejection do not replace that observation.
