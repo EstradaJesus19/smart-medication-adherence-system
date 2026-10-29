@@ -82,6 +82,10 @@ For the separate combined medication bench with an incremental OLED clock, see
 [scheduled OLED integration](docs/scheduled_oled_test.md) (`scheduled_oled_test`).
 It splits display transfers between input/timer updates and retains serial state output.
 
+For a separate SD card read/write/retention bench test, see
+[SD card test guide](docs/sd_test.md) (`sd_test`). It creates only explicitly
+requested new test files and does not run the medication system.
+
 Open the folder in VS Code with PlatformIO. In its terminal:
 
 ```sh
@@ -180,7 +184,8 @@ The separate hardware environments implement RTC scheduling with grouped doses
 and overlap rejection, debounced lid inputs, LEDs, refill/silence buttons, buzzer
 alerts and an incremental OLED clock.
 
-Next, validate storage separately before integrating event logging. Internal
+The standalone `sd_test` now provides SD read/write and retention checks.
+Next, integrate queued event logging and validate its effect on live controls. Internal
 configuration persistence, restart recovery, Wi-Fi and an app remain planned.
 
 The active schedule and medication history are RAM-only: reset clears them and
