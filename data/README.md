@@ -31,14 +31,26 @@ sessions using DOSE_STARTED / SESSION_FINISHED and run metadata. Do not treat th
 as a globally unique identifier. A future calendar scheduler/recovery record must
 define stable dated occurrence IDs.
 
-State/history are RAM-only. Logging prints immediately; no microSD or persistent
-writes exist. Completion records remain available after replacement only if the
-serial output was captured.
+In the simulator, state/history are RAM-only. Logging prints immediately to
+serial/stdout; the simulator performs no microSD or persistent writes. Completion
+records remain available after replacement only if the serial output was captured.
 
 Record: run ID, date, source revision, build target, simulation/hardware, settings,
 schedule or injected commands, initial lids, expected/observed outcomes, pass/fail
 and anomalies. Use dummy contents and no patient identifiers.
 
-Planned storage: microSD for event history; internal storage for a small settings
-and recovery record. Missing/full media, interrupted writes, consistency between
-records and RTC validity must be addressed before claiming restart recovery.
+The separate hardware environment below implements microSD event history;
+internal storage for settings and recovery remains planned. Missing/full media,
+interrupted writes, consistency between records and RTC validity must be addressed
+before claiming restart recovery.
+
+
+## Separate hardware SD log schema
+
+The description above remains the original simplified simulation format.
+The new `scheduled_sd_test` environment has a separate checksummed CSV schema,
+random boot ID and event sequence. Its core serial CSV appends event_seq for
+correlation. See [queued SD guide](../docs/scheduled_sd_test.md) for fields,
+queue/loss/sync semantics and `checks/verify_event_log.py` for read-only PC
+validation. Do not mix its files with simulator CSV or interpret queued events
+as synced. This adds event history, not configuration or restart recovery.

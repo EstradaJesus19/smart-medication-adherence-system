@@ -86,6 +86,10 @@ For a separate SD card read/write/retention bench test, see
 [SD card test guide](docs/sd_test.md) (`sd_test`). It creates only explicitly
 requested new test files and does not run the medication system.
 
+For combined reminders/OLED with a bounded queue and a separate SD worker, see
+[queued SD integration](docs/scheduled_sd_test.md) (`scheduled_sd_test`).
+It adds event files, not saved configuration or medication restart recovery.
+
 Open the folder in VS Code with PlatformIO. In its terminal:
 
 ```sh
@@ -182,16 +186,22 @@ environments; the simulator retains its manual clock.
 
 The separate hardware environments implement RTC scheduling with grouped doses
 and overlap rejection, debounced lid inputs, LEDs, refill/silence buttons, buzzer
-alerts and an incremental OLED clock.
+alerts and an incremental OLED clock. `scheduled_sd_test` adds queued microSD
+event logging to that bench integration.
 
-The standalone `sd_test` now provides SD read/write and retention checks.
-Next, integrate queued event logging and validate its effect on live controls. Internal
-configuration persistence, restart recovery, Wi-Fi and an app remain planned.
+Complete the remaining SD integration acceptance tests before claiming full
+physical validation. B1 operational behavior and manual file-content review are
+user-reported; automated validation of that physical export and B2-B10 remain
+pending. See [queued SD validation](docs/scheduled_sd_test.md).
+
+Internal configuration persistence and restart recovery remain planned. No Wi-Fi
+or app is implemented. A future app can use the same explicit operations.
 
 The active schedule and medication history are RAM-only: reset clears them and
 boots DISARMED. The core runs one device and one session at a time. A new dose
-replaces that compartment's latest working record; captured serial output can
-preserve past evidence. Missed doses cannot be confirmed retroactively. Physical
+replaces that compartment's latest working record. Captured serial output and
+successfully synced SD records can preserve past evidence, but SD logs do not
+restore live state. Missed doses cannot be confirmed retroactively. Physical
 response, usability and recovery need their own tests.
 
 Course outputs remain an eight-page LaTeX paper, five-minute pitch (about seven
